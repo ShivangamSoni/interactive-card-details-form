@@ -3,7 +3,7 @@ import Form from "@components/Form";
 
 export default function App() {
     return (
-        <main className="min-h-screen font-primary grid grid-rows-[auto_1fr]">
+        <main className="min-h-screen pb-8 font-primary grid grid-rows-[auto_1fr] lg:grid-rows-1 lg:grid-cols-[4fr_6fr] lg:pb-0 xl:grid-cols-[500px_1fr]">
             <Header
                 cardNumber="1234567890123456"
                 name="Shivangam Soni"

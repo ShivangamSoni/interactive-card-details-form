@@ -7,8 +7,8 @@ import {
 
 export default function Form({ children }: { children: ReactNode }) {
     return (
-        <form className="px-6 mt-2">
-            <div className="flex flex-col gap-8">{children}</div>
+        <form className="px-6 mt-2 lg:m-0 lg:p-0 lg:grid lg:place-items-center">
+            <div className="flex flex-col gap-8 lg:w-[400px]">{children}</div>
         </form>
     );
 }
@@ -39,7 +39,7 @@ Form.Input = ({
                 >
                     <input
                         {...inputProps}
-                        className="w-full py-1.5 px-3 rounded-lg border-none outline-none placeholder:text-grayishViolet-300"
+                        className="w-full py-1.5 px-3 rounded-lg border-none outline-none text-grayishViolet-700 placeholder:text-grayishViolet-300"
                     />
                 </span>
             </label>
