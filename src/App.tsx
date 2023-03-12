@@ -1,13 +1,15 @@
+import Header from "@components/Header";
+
 export default function App() {
     return (
-        <div className="min-h-screen font-primary">
-            <h1 className="text-3xl font-semibold p-3">
-                <span className="inline-block p-0.5 bg-gradient-to-r from-violet to-purple rounded-full">
-                    <span className="inline-block px-5 py-2 bg-white rounded-full">
-                        App
-                    </span>
-                </span>
-            </h1>
-        </div>
+        <main className="min-h-screen font-primary grid grid-rows-[auto_1fr]">
+            <Header
+                cardNumber="1234567890123456"
+                name="Shivangam Soni"
+                cvv="646"
+                month="10"
+                year="32"
+            />
+        </main>
     );
 }
