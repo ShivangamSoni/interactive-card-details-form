@@ -42,7 +42,7 @@ Form.Input = ({
                     />
                 </span>
             </label>
-            {error && <span className="text-error text-sm">{error}</span>}
+            {error && <Form.Error>{error}</Form.Error>}
         </div>
     );
 };
@@ -51,4 +51,8 @@ Form.Label = ({ children }: { children: ReactNode }) => (
     <span className="uppercase text-grayishViolet-700 text-sm font-semibold tracking-widest">
         {children}
     </span>
+);
+
+Form.Error = ({ children }: { children: ReactNode }) => (
+    <span className="text-error text-sm">{children}</span>
 );
