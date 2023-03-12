@@ -14,7 +14,12 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "@assets/*": ["src/assets/*"],
+            "@components/*": ["src/components/*"]
+        }
     },
     "include": ["src", "node_modules/vite-plugin-svgr/client.d.ts"],
     "references": [{ "path": "./tsconfig.node.json" }]
