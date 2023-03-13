@@ -8,6 +8,7 @@ import CompleteState from "@components/CompleteState";
 
 import Button from "@components/Button";
 import { useState } from "react";
+import Spinner from "@components/Spinner";
 
 const CardSchema = object({
     name: string()
@@ -46,7 +47,7 @@ const CardSchema = object({
         .test(
             "validate-length",
             () => "Should be exactly 2 Digits",
-            (value) => value.toString().length === 2,
+            (value) => value <= 9 || value.toString().length === 2,
         ),
     cvc: number()
         .typeError("Wrong format, Digits only")
@@ -64,10 +65,12 @@ type CardState = InferType<typeof CardSchema>;
 
 export default function App() {
     const [complete, setComplete] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
         watch,
     } = useForm<CardState>({
@@ -76,6 +79,14 @@ export default function App() {
 
     const onSubmit: SubmitHandler<CardState> = (data) => {
         console.log({ data });
+        setLoading(true);
+
+        // Simulating API Call
+        setTimeout(() => {
+            setLoading(false);
+            setComplete(true);
+            reset();
+        }, 2000);
     };
 
     const name = watch("name");
@@ -94,81 +105,87 @@ export default function App() {
                 year={year}
             />
 
-            {!complete ? (
-                <Form onSubmit={handleSubmit(onSubmit)}>
-                    <Form.Input
-                        label="Cardholder Name"
-                        error={errors.name?.message || ""}
-                        inputProps={{
-                            ...register("name"),
-                            placeholder: "e.g. Jane Appleseed",
-                        }}
-                    />
+            {loading ? (
+                <Spinner label="Submitting..." />
+            ) : (
+                <>
+                    {!complete ? (
+                        <Form onSubmit={handleSubmit(onSubmit)}>
+                            <Form.Input
+                                label="Cardholder Name"
+                                error={errors.name?.message || ""}
+                                inputProps={{
+                                    ...register("name"),
+                                    placeholder: "e.g. Jane Appleseed",
+                                }}
+                            />
 
-                    <Form.Input
-                        label="Card Number"
-                        error={errors.cardNumber?.message || ""}
-                        inputProps={{
-                            ...register("cardNumber", {
-                                valueAsNumber: true,
-                            }),
-                            placeholder: "e.g. 1234 5678 9123 0000",
-                        }}
-                    />
+                            <Form.Input
+                                label="Card Number"
+                                error={errors.cardNumber?.message || ""}
+                                inputProps={{
+                                    ...register("cardNumber", {
+                                        valueAsNumber: true,
+                                    }),
+                                    placeholder: "e.g. 1234 5678 9123 0000",
+                                }}
+                            />
 
-                    <div className="grid grid-cols-2 gap-2 items-start">
-                        <div className="grid gap-2">
-                            <Form.Label>Exp. Date (MM/YY)</Form.Label>
-                            <div className="flex gap-2">
+                            <div className="grid grid-cols-2 gap-2 items-start">
+                                <div className="grid gap-2">
+                                    <Form.Label>Exp. Date (MM/YY)</Form.Label>
+                                    <div className="flex gap-2">
+                                        <Form.Input
+                                            label="Month"
+                                            labelVisible={false}
+                                            error=""
+                                            inputProps={{
+                                                ...register("month", {
+                                                    valueAsNumber: true,
+                                                }),
+                                                placeholder: "MM",
+                                            }}
+                                        />
+                                        <Form.Input
+                                            label="Year"
+                                            labelVisible={false}
+                                            error=""
+                                            inputProps={{
+                                                ...register("year", {
+                                                    valueAsNumber: true,
+                                                }),
+                                                placeholder: "YY",
+                                            }}
+                                        />
+                                    </div>
+                                    {(errors.month?.message ||
+                                        errors.year?.message) && (
+                                        <Form.Error>
+                                            {errors.month?.message ||
+                                                errors.year?.message ||
+                                                ""}
+                                        </Form.Error>
+                                    )}
+                                </div>
+
                                 <Form.Input
-                                    label="Month"
-                                    labelVisible={false}
-                                    error=""
+                                    label="CVC"
+                                    error={errors.cvc?.message || ""}
                                     inputProps={{
-                                        ...register("month", {
+                                        ...register("cvc", {
                                             valueAsNumber: true,
                                         }),
-                                        placeholder: "MM",
-                                    }}
-                                />
-                                <Form.Input
-                                    label="Year"
-                                    labelVisible={false}
-                                    error=""
-                                    inputProps={{
-                                        ...register("year", {
-                                            valueAsNumber: true,
-                                        }),
-                                        placeholder: "YY",
+                                        placeholder: "e.g. 123",
                                     }}
                                 />
                             </div>
-                            {(errors.month?.message ||
-                                errors.year?.message) && (
-                                <Form.Error>
-                                    {errors.month?.message ||
-                                        errors.year?.message ||
-                                        ""}
-                                </Form.Error>
-                            )}
-                        </div>
 
-                        <Form.Input
-                            label="CVC"
-                            error={errors.cvc?.message || ""}
-                            inputProps={{
-                                ...register("cvc", {
-                                    valueAsNumber: true,
-                                }),
-                                placeholder: "e.g. 123",
-                            }}
-                        />
-                    </div>
-
-                    <Button type="submit">Submit</Button>
-                </Form>
-            ) : (
-                <CompleteState />
+                            <Button type="submit">Submit</Button>
+                        </Form>
+                    ) : (
+                        <CompleteState onContinue={() => setComplete(false)} />
+                    )}
+                </>
             )}
         </main>
     );

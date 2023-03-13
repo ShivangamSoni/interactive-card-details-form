@@ -2,7 +2,11 @@ import { CompletedIcon } from "@assets/index";
 
 import Button from "./Button";
 
-export default function CompleteState() {
+export default function CompleteState({
+    onContinue,
+}: {
+    onContinue: () => void;
+}) {
     return (
         <div className="grid place-items-center px-6 mt-2 lg:m-0 lg:p-0">
             <div className="w-[min(400px,100%)] flex flex-col justify-center gap-8">
@@ -15,7 +19,9 @@ export default function CompleteState() {
                         We've added your card details
                     </span>
                 </div>
-                <Button type="button">Continue</Button>
+                <Button type="button" onClick={onContinue}>
+                    Continue
+                </Button>
             </div>
         </div>
     );
