@@ -37,7 +37,7 @@ Form.Input = ({
     return (
         <div className="w-full grid gap-2">
             <label className="grid gap-2 cursor-pointer">
-                {labelVisible && <Form.Label>{label}</Form.Label>}
+                <Form.Label visible={labelVisible}>{label}</Form.Label>
                 <span
                     className={`${
                         error ? "bg-error" : "bg-grayishViolet-300"
@@ -54,8 +54,18 @@ Form.Input = ({
     );
 };
 
-Form.Label = ({ children }: { children: ReactNode }) => (
-    <span className="uppercase text-grayishViolet-700 text-sm font-semibold tracking-widest">
+Form.Label = ({
+    children,
+    visible = true,
+}: {
+    children: ReactNode;
+    visible?: boolean;
+}) => (
+    <span
+        className={`uppercase text-grayishViolet-700 text-sm font-semibold tracking-widest ${
+            !visible ? "sr-only" : ""
+        }`}
+    >
         {children}
     </span>
 );
