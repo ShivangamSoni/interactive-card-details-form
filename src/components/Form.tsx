@@ -1,12 +1,19 @@
 import {
     type DetailedHTMLProps,
     type InputHTMLAttributes,
+    type FormHTMLAttributes,
     type ReactNode,
 } from "react";
 
-export default function Form({ children }: { children: ReactNode }) {
+export default function Form({
+    children,
+    ...props
+}: DetailedHTMLProps<FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>) {
     return (
-        <form className="px-6 mt-2 lg:m-0 lg:p-0 lg:grid lg:place-items-center">
+        <form
+            {...props}
+            className="px-6 mt-2 lg:m-0 lg:p-0 lg:grid lg:place-items-center"
+        >
             <div className="flex flex-col gap-8 lg:w-[400px]">{children}</div>
         </form>
     );

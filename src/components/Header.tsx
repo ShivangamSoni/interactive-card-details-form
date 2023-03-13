@@ -1,21 +1,25 @@
 import { BG, CardLogo } from "@assets/index";
-import { useEffect, useRef, useState } from "react";
+
+function getStr(val: number) {
+    return isNaN(val) ? "" : val.toString();
+}
 
 export default function Header({
     cardNumber,
     name,
     month,
     year,
-    cvv,
+    cvc,
 }: {
-    cardNumber: string;
+    cardNumber: number;
     name: string;
-    month: string;
-    year: string;
-    cvv: string;
+    month: number;
+    year: number;
+    cvc: number;
 }) {
-    cardNumber = cardNumber || "0000000000000000";
-    const cardNumberSegments = cardNumber
+    const cardNumberSegments = getStr(cardNumber)
+        .slice(0, 16)
+        .padEnd(16, "0")
         .split("")
         .reduce<string[]>((res, char, idx) => {
             const segIdx = Math.floor(idx / 4);
@@ -59,8 +63,8 @@ export default function Header({
                                 {name || "Jane Appleseed"}
                             </span>
                             <span>
-                                <span>{month || "00"}</span> /{" "}
-                                <span>{year || "00"}</span>
+                                <span>{getStr(month).padStart(2, "0")}</span> /{" "}
+                                <span>{getStr(year).padStart(2, "0")}</span>
                             </span>
                         </div>
                     </div>
@@ -70,7 +74,7 @@ export default function Header({
                     <img src={BG.Card.Back} alt="" />
                     <div className="absolute top-[41%] xs:top-[43%] lg:top-[43%] right-[12%]">
                         <span className="text-white text-sm md:text-base">
-                            {cvv || "000"}
+                            {getStr(cvc).padStart(3, "0")}
                         </span>
                     </div>
                 </div>
